@@ -22,12 +22,14 @@ for ((i=$start; i<=$end; i++)); do printf "file '%s'\n" $video >> list.txt ; don
 
 echo "Assembling Video"
 
-ffmpeg -f concat -i list.txt -c copy output.mp4
+ffmpeg -f concat -i list.txt -c copy -flags global_header output.mp4
 # cat list.txt
 
 echo "Adding Audio to Video"
 
-ffmpeg -i output.mp4 -i $audio_track -codec copy -shortest $new_file_name
+# ffmpeg -i output.mp4 -i $audio_track -codec copy -shortest $new_file_name
+# ffmpeg -i input.mp4 -i input.mp3 -c copy -map 0:v:0 -map 1:a:0 output.mp4
+ffmpeg -i output.mp4 -i $audio_track -c copy -map 0:v:0 -map 1:a:0 $new_file_name
 
 echo "Deleting Temp files"
 
